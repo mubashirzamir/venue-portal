@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './Component.css';
+//import './Component.css';
 
 class Register extends Component {
 
@@ -87,17 +87,41 @@ class Register extends Component {
         return (
             <div class="container">
 
-                <form onSubmit={this.handleSubmit}>
+                <div className="py-4">
 
-                    <h1>Register</h1>
-                    <label>Name</label> <input type="text" value={this.state.name} onChange={this.namehandler} placeholder="Name" required /><br />
-                    <label>Email</label> <input type="email" value={this.state.email} onChange={this.emailhandler} placeholder="Email" required /><br />
-                    <label>Password</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password" required /><br />
+                    <form onSubmit={this.handleSubmit}>
 
-                    <input class="submitbtn" type="submit" value="Register" />
-                </form>
+                        <h1>Register</h1>
+                        <div class="row mb-3">
+                            <label for="inputText3" class="col-sm-2 col-form-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputText3" value={this.state.name} onChange={this.namehandler} required />
+                            </div>
+                        </div>
 
-                <p>{this.state.registerStatus}</p>
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="inputEmail3" value={this.state.email} onChange={this.emailhandler} required />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="inputPassword3" value={this.state.password} onChange={this.passwordhandler} required />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Register</button>
+                        </div>
+
+                    </form>
+
+                    <p className="lead">{this.state.registerStatus}</p>
+
+                </div>
 
             </div>
 

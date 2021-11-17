@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import './Component.css';
+//import './Component.css';
 
 class Login extends Component {
 
@@ -88,16 +88,35 @@ class Login extends Component {
         return (
             <div class="container">
 
-                <form onSubmit={this.handleSubmit}>
+                <div className="py-4">
 
-                    <h1>Login</h1>
-                    <label>Email</label> <input type="email" value={this.state.email} onChange={this.emailhandler} placeholder="Email" required /><br />
-                    <label>Password</label> <input type="password" value={this.state.password} onChange={this.passwordhandler} placeholder="Password" required /><br />
+                    <form onSubmit={this.handleSubmit}>
 
-                    <input class="submitbtn" type="submit" value="Login" />
-                </form>
+                        <h1>Login</h1>
 
-                <p>{this.state.loginStatus}</p>
+                        <div class="row mb-3">
+                            <label for="inputEmail3" class="col-sm-2 col-form-label">Email</label>
+                            <div class="col-sm-10">
+                                <input type="email" class="form-control" id="inputEmail3" value={this.state.email} onChange={this.emailhandler} required />
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="inputPassword3" class="col-sm-2 col-form-label">Password</label>
+                            <div class="col-sm-10">
+                                <input type="password" class="form-control" id="inputPassword3" value={this.state.password} onChange={this.passwordhandler} placeholder="Password" required required />
+                            </div>
+                        </div>
+
+                        <div class="col-12">
+                            <button class="btn btn-primary" type="submit">Login</button>
+                        </div>
+
+                    </form>
+
+                    <p className="lead">{this.state.loginStatus}</p>
+
+                </div>
 
             </div>
 

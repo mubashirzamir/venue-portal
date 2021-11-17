@@ -7,15 +7,14 @@ class GetUser extends Component {
         super(props)
 
         this.state = {
-            id: "",
-            name: "",
-            email: "",
+            userArray: [],
             userResult: "",
         }
 
+        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    render() {
+    handleSubmit = (event) => {
 
         try {
 
@@ -29,17 +28,15 @@ class GetUser extends Component {
             }).then(response => response.json())
                 .then((data) => {
 
-                    if (!data.id) {
+                    if (data.user) {
                         this.setState({
-                            actionStatus: data.message
+                            userArray: data.user
                         })
                     }
 
                     else {
                         this.setState({
-                            id: data.id,
-                            name: data.name,
-                            email: data.email
+                            userResult: data.message
                         })
                     }
 
@@ -51,37 +48,56 @@ class GetUser extends Component {
             console.log(e)
         }
 
+        event.preventDefault()
+
+    }
+
+
+
+    render() {
+
         return (
             <div class="container">
 
-                <div className="py-4">
+                <form onSubmit={this.handleSubmit}>
 
                     <h1>Get User</h1>
+                    <input class="submitbtn" type="submit" value="Get User" />
 
-                    <p className="lead">{this.state.userResult}</p>
+                    <p>{this.state.userResult}</p>
 
-                    <table class="table shadow">
+                    <table>
                         <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Email</th>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
                         </tr>
-                        <tr>
+                        {this.state.userArray.map((userArray) => (
 
-                            <td>{this.state.id}</td>
-                            <td>{this.state.name}</td>
-                            <td>{this.state.email}</td>
+                            <User
+                                id={userArray.id}
+                                name={userArray.name}
+                                email={userArray.email}
+                            />
 
-                        </tr>
+                        ))}
                     </table>
-                </div>
 
-
+                </form>
 
             </div>
 
         )
     }
 }
+
+const User = ({ id, name, email }) => (
+    <tr>
+        <td>{id}</td>
+        <td>{name}</td>
+        <td>{email}</td>
+    </tr>
+
+);
 
 export default GetUser

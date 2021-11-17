@@ -1,10 +1,9 @@
 const jwt = require('jsonwebtoken');
-const conn = require('../dbConnection').promise();
+const conn = require('../../dbConnection').promise();
 
-exports.getUser = async (req, res, next) => {
+exports.deleteUser = async (req, res, next) => {
 
     try {
-
         if (
             !req.headers.authorization ||
             !req.headers.authorization.startsWith('Bearer') ||
@@ -18,22 +17,25 @@ exports.getUser = async (req, res, next) => {
         const theToken = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(theToken, 'the-super-strong-secret');
 
-        const [row] = await conn.execute(
-            "SELECT `id`,`name`,`email` FROM `users` where `id` = ?",
-            [decoded.id]
+        const [rows] = await conn.execute(
+            "DELETE FROM `users` WHERE `id`=?",
+            [req.body.id]
         );
 
-        if (row.length > 0) {
+        if (rows.affectedRows === 1) {
             return res.json({
-                id: row[0].id,
-                name: row[0].name,
-                email: row[0].email
+                message: "Deleted successfully"
             });
         }
 
-        res.json({
-            message: "No user found"
-        });
+        if (rows.affectedRows === 0) {
+            return res.json({
+                message: "No such user exists"
+            });
+        }
+
+
+
 
     }
     catch (err) {

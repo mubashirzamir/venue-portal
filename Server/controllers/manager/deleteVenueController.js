@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const conn = require('../dbConnection').promise();
+const conn = require('../../dbConnection').promise();
 
-exports.getUser = async (req, res, next) => {
+exports.deleteVenue = async (req, res, next) => {
 
     try {
 
@@ -18,22 +18,21 @@ exports.getUser = async (req, res, next) => {
         const theToken = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(theToken, 'the-super-strong-secret');
 
-        const [row] = await conn.execute(
-            "SELECT `id`,`name`,`email` FROM `users` where `id` = ?",
-            [decoded.id]
+        const [rows] = await conn.execute("DELETE FROM `venue` where venue_id = ?",
+            [req.body.venue_id],
         );
 
-        if (row.length > 0) {
+        if (rows.affectedRows === 1) {
             return res.json({
-                id: row[0].id,
-                name: row[0].name,
-                email: row[0].email
+                message: "Deleted successfully"
             });
         }
 
-        res.json({
-            message: "No user found"
-        });
+        if (rows.affectedRows === 0) {
+            return res.json({
+                message: "No such venue exists"
+            });
+        }
 
     }
     catch (err) {

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
-const conn = require('../dbConnection').promise();
+const conn = require('../../dbConnection').promise();
 
-exports.getUser = async (req, res, next) => {
+exports.addReview = async (req, res, next) => {
 
     try {
 
@@ -18,21 +18,21 @@ exports.getUser = async (req, res, next) => {
         const theToken = req.headers.authorization.split(' ')[1];
         const decoded = jwt.verify(theToken, 'the-super-strong-secret');
 
-        const [row] = await conn.execute(
-            "SELECT `id`,`name`,`email` FROM `users` where `id` = ?",
-            [decoded.id]
-        );
+        const [rows] = await conn.execute('INSERT INTO `venue_reviews`(`venue_id`,`user_id`,`rating`,`review_text`) VALUES(?,?,?,?)', [
+            req.body.venue_id,
+            decoded.id,
+            req.body.rating,
+            req.body.review_text
+        ]);
 
-        if (row.length > 0) {
+        if (rows.affectedRows === 1) {
             return res.json({
-                id: row[0].id,
-                name: row[0].name,
-                email: row[0].email
+                review_id: rows.insertId
             });
         }
 
         res.json({
-            message: "No user found"
+            message: "Review failure"
         });
 
     }
